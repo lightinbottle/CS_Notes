@@ -47,15 +47,16 @@
   public static <E> void append(List<E> list) {
     E elem = new E();  // compile-time error
     list.add(elem);
- }
-  ```
- 这个问题可以通过反射解决
- ```java
- public static <E> void append(List<E> list, Class<E> cls) throws Exception {
+  }
+  ```  
+  这个问题可以通过反射解决
+  
+  ```java
+  public static <E> void append(List<E> list, Class<E> cls) throws Exception {
     E elem = cls.newInstance();   // OK 调用的时候调用append(List<String>,String.Class)
     list.add(elem);
-}
- ```
+  }
+  ```
  
 * 不能用`instanceof`对泛型进行类型检查
 
@@ -63,11 +64,12 @@
   if(a instanceof Pair<String>)   //Error
   ```
 ## 通配符  
-* 通配符是为了让，父类型的泛型方法同样对 子类型 试用
-例如：  
-```java
-public static void printBuddies(Pair<? extends Employee>) //该泛型方法对于，Employee及其子类都适用
-```
+* 通配符是为了让，父类型的泛型方法同样对 子类型 试用  
+  例如：  
+
+  ```java
+  public static void printBuddies(Pair<? extends Employee>)     //该泛型方法对于，Employee及其子类都适用
+  ```
 
 ## 参考
  * [Java 泛型详解](http://www.importnew.com/24029.html)
