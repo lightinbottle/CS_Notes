@@ -29,3 +29,7 @@
     ```    
  * 类型擦除为了代码版本的兼容，使得早期版本的非泛型java程序还能在后续高版本的JVM上运行  
  
+ ## 4.参考
+ * [Java 泛型详解](http://www.importnew.com/24029.html)
+ * [10 道 Java 泛型面试题](https://cloud.tencent.com/developer/article/1033693)
+
