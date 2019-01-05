@@ -80,3 +80,99 @@
 
 ## 队列与双端队列
 
+* 双端队列接口`Deque`,并由ArrayDeque 和 LinkedList 两个类实现，支持在队头队尾操作
+
+## 优先级队列
+
+* 优先级队列Priority Queue，是用`堆（heap）`实现，堆是一种可以自我调节的二叉树，可以让最小的元素移动到根节点位置，但是不用花费时间排序
+* 与TreeSet的迭代不同，优先级队列的迭代不是有序的，但是对优先级队列的`删除`操作是有序的（每次删除最小的元素）
+* PQ的典型用例就是任务调度，优先级高的（数值低）任务先被执行
+
+## 基本映射
+
+* java提供了两个通用的映射Map的实现：`HashMap(hash table)`和`TreeMap(red black tree)`
+
+* TreeMap用键(key)的整体排序对元素进行排序，并将其组织成一个搜索树
+
+* 如果不需要有序访问键(key), 最好选择HashMap
+
+* 迭代处理映射的（key-value）,最容易的方法就是使用`forEach()`方法：
+
+  > mapA.forEach((k,v) -> System.out.println("key="+k+", value="+v));
+
+* Map的视图(view, 从Map得到的实现了Collection接口或者某个子接口的对象)
+
+  Map的三个视图：
+
+  ```java
+  Set<E> keySet();
+  Collection<V> values();
+  Set<Map.Entry<k,v>> entrySet();
+  ```
+
+  可以在视图返回的集合中删除元素，被删除的元素也将被从原始映射中删除，但是不能通过这个集合添加元素。
+
+## 弱散列映射
+
+* `WeakHashMap`解决的问题： 垃圾回收器（GC）跟踪活动的对象，对于普通的HashMap，只要映射对象是活动的，那么其中的所有桶都是活动的，它们不可以被回收。这样就可能继续存储一些无用的值
+
+  WeakHashMap中，当对键的唯一引用来自散列条目时，这一数据结构将于GC协同工作一起删除无用的键/值对。
+
+## 链接散列集与映射
+
+* LinkedHashSet LinkedHashMap解决的是HashSet 和 HashMap的迭代无序问题。将HashSet 和 HashMap中存储的元素通过双向链表连接起来
+
+* LinkedHashMap支持按照`插入顺序`迭代的同时还支持按照`访问顺序`的迭代
+
+  ```java
+  public LinkedHashMap(int initialCapacity,
+                           float loadFactor,              //填充因子
+                           boolean accessOrder)   //true表示访问顺序，false表示插入顺序   
+  ```
+
+  [Map 综述（二）：彻头彻尾理解 LinkedHashMap](https://blog.csdn.net/justloveyou_/article/details/71713781)
+
+* LinkedHashMap的`访问顺序`实现原理
+
+  当accessOrder标志位为true时，表示双向链表中的元素按照访问的先后顺序排列，可以看到，虽然Entry插入链表的顺序依然是按照其put到LinkedHashMap中的顺序，但put和get方法均有调用recordAccess方法（put方法在key相同时会调用）。recordAccess方法判断accessOrder是否为true，如果是，则将当前访问的Entry（put进来的Entry或get出来的Entry）移到双向链表的尾部（key不相同时，put新Entry时，会调用addEntry，它会调用createEntry，该方法同样将新插入的元素放入到双向链表的***尾部***，既符合插入的先后顺序，又符合访问的先后顺序，因为这时该Entry也被访问了）；当标志位accessOrder的值为false时，表示双向链表中的元素按照Entry插入LinkedHashMap到中的先后顺序排序，即每次put到LinkedHashMap中的Entry都放在双向链表的尾部，这样遍历双向链表时，Entry的输出顺序便和插入的顺序一致，这也是默认的双向链表的存储顺序。
+
+* LRU（Least Recently Used）最少最近使用原则， 高速缓存算法
+
+  当我们要用LinkedHashMap实现LRU算法时，就需要调用该构造方法并将accessOrder置为true，并且需要重写`removeEldestEntry()`方法
+
+  ```java
+  protected boolean removeEldestEntry(Map.Entry<K,V> eldest) {
+       return false;            //默认返回false也就是不删除eldest元素
+  }
+  ```
+
+  eldest是双向链表中header后的那个节点
+
+  一个LRU的典型的例子：
+
+  ```java
+  protected boolean removeEldestEntry(java.util.Map.Entry<K, V> eldest) {
+          // TODO Auto-generated method stub
+          if(size() > 6){         //6 表示缓存的容量，当超过一定容量就删除least recently表示的元素
+              return true; 
+          }
+          return false;
+   }
+  
+  ```
+
+  
+
+## 枚举集与映射
+
+* 枚举类型的元素集和
+
+## 标志散列映射
+
+* 在这个类中，键的hashcode不是用hashCode( )函数计算，而是用`System.identityHashCode()`方法计算，该方法根据对象的内存地址来计算散列码。同时，两个对象进行比较时，IdentityHashMap类使用`==`而不是`equals`,也就是说两个对象即使内容相同，也被视为不一样的对象
+* 可以用来跟踪每个对象的遍历情况（即使内容相同，也被视为不一样的对象）
+
+
+
+
+
