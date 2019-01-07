@@ -4,13 +4,13 @@
 
 * java集合中定义的接口框架如下图所示：
 
-  ![collection接口结构](Pics\collection接口结构.png)
+  <center> <img src="Pics\collection接口结构.png"/> </center>
 
 ##集合的类框架
 
 * java集合中定义的类框架如下图所示：
 
-  ![collection类结构](Pics\collection类结构.png)
+  <center> <img src="Pics\collection类结构.png"/> </center>
 
 ## 链表
 
