@@ -6,7 +6,9 @@
 
   <center> <img src="Pics\collection接口结构.png"/> </center>
 
-##集合的类框架
+  
+
+## 集合的类框架
 
 * java集合中定义的类框架如下图所示：
 
